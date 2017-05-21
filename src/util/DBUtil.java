@@ -6,10 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.DriverManager;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.sql.ResultSetMetaData;
 /**
  *	@Author: jx
@@ -91,17 +88,16 @@ public class DBUtil {
      * @Return：List<HashMap> 查询结果集合，HashMap<(Object)column,(Object)value>
      * @Example: TODO
 	* */
-	public List<HashMap> select(String sql){
-		List resultList = null;
+	public ArrayList<HashMap> select(String sql){
+		LinkedList resultList = new LinkedList();
 		Statement stmt = this.stmt;
 		try{
 			rs = stmt.executeQuery(sql);
-			resultList = new ArrayList();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while(null != rs && rs.next()){
 				HashMap metaMap = new HashMap();
 				for(int i = 1; i <= rsmd.getColumnCount(); i++){
-					metaMap.put(rsmd.getColumnName(i),rs.getObject(rsmd.getColumnName(i)));
+					metaMap.put(rsmd.getColumnLabel(i),rs.getObject(rsmd.getColumnLabel(i)));
 				}
 				resultList.add(metaMap);
 			}
@@ -109,7 +105,7 @@ public class DBUtil {
 			e.printStackTrace();
 			close();
 		}
-		return resultList;
+		return new ArrayList<HashMap>(resultList);
 	}
 
     /**
@@ -128,8 +124,8 @@ public class DBUtil {
      *  }
      *  db.close();
      * */
-	public List<HashMap> select(String sql, List<?> parameters){
-		List resultList = null;
+	public ArrayList<HashMap> select(String sql, List<?> parameters){
+		LinkedList resultList = new LinkedList();
 		Connection conn = this.conn;
 		PreparedStatement prestmt = null;
 		try{
@@ -139,12 +135,11 @@ public class DBUtil {
 				prestmt.setObject(++ index, p);
 			}
 			rs = prestmt.executeQuery();
-			resultList = new ArrayList();
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while(null != rs && rs.next()){
 				HashMap metaMap = new HashMap();
 				for(int i = 1; i <= rsmd.getColumnCount(); i++){
-					metaMap.put(rsmd.getColumnName(i),rs.getObject(rsmd.getColumnName(i)));
+					metaMap.put(rsmd.getColumnLabel(i),rs.getObject(rsmd.getColumnLabel(i)));
 				}
 				resultList.add(metaMap);
 			}
@@ -152,7 +147,7 @@ public class DBUtil {
 			e.printStackTrace();
 			close();
 		}
-		return resultList;
+		return new ArrayList<HashMap>(resultList);
 	}
 
     /**
@@ -160,8 +155,8 @@ public class DBUtil {
      * @Parameters:sql 查询语句"select [column] from [table] <where [condition] = [param]>
      * @Return:List<String> 查询列的集合
     * */
-	public List<String> selectOneColumn(String sql){
-		List<String> resultList = new ArrayList<String>();
+	public ArrayList<String> selectOneColumn(String sql){
+		LinkedList<String> resultList = new LinkedList<String>();
 		Statement stmt = this.stmt;
 		try{
 			rs = stmt.executeQuery(sql);
@@ -172,7 +167,7 @@ public class DBUtil {
 			e.printStackTrace();
 			close();
 		}
-		return resultList;
+		return new ArrayList<String>(resultList);
 	}
 
 

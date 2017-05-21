@@ -18,6 +18,10 @@ public class Resource {
         this.content = content;
     }
 
+    public String toString(){
+        return "Resource: type = " + type + ", id = " + (id.length() <= 20 ? id : id.substring(0,20)) + ", content = " + (content.length() <= 50 ? content : content.substring(0, 50));
+    }
+
     public String getType() {
         return type;
     }

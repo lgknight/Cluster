@@ -13,6 +13,9 @@ import java.util.*;
  */
 public class ResourceDAO {
 
+    /**
+     * @Description: 私有函数，代码公用
+     * */
     private static List<Resource> getResource(String type, String sql){
         DBUtil db = new DBUtil();
         LinkedList<Resource> news = new LinkedList<>();
@@ -22,7 +25,6 @@ public class ResourceDAO {
         }
         db.close();
         return new ArrayList<>(news);
-
     }
 
     /**
@@ -44,6 +46,11 @@ public class ResourceDAO {
         String querySql = "select news_article_id as id, chinese_content as content from News where real_time > '" + sinceString + "'";
         return getResource("n", querySql);
     }
+
+    /**
+     * @Description: 聚类结果写回数据库
+     * @TODO
+    * */
 
     public static void main(String[] args) {
         // TODO Auto-generated

@@ -7,4 +7,5 @@
  * 聚类效果指标
  */
 public class ClusterResource {
+
 }
